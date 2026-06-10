@@ -1,6 +1,10 @@
 import { Card } from "@/components/ui/card";
 import { channelMix } from "@/lib/data";
-import { channelColor, channelIcon } from "./icons";
+import { channelIcon } from "./icons";
+
+// Monochrome blue scale (Bentonville → True → Everyday → Sky) keeps the
+// segments distinguishable without four competing hues.
+const blueScale = ["#001E60", "#0071DC", "#4DBDF5", "#A9DDF7"];
 
 export function ChannelMix() {
   const max = Math.max(...channelMix.byChannel.map((c) => c.count));
@@ -23,11 +27,10 @@ export function ChannelMix() {
           <div className="grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
             {channelMix.byChannel.map((c) => {
               const Icon = channelIcon[c.channel];
-              const color = channelColor[c.channel];
               return (
                 <div key={c.channel}>
                   <div className="flex items-center gap-1.5 text-muted">
-                    <Icon className="size-3.5" style={{ color }} />
+                    <Icon className="size-3.5 text-faint" />
                     <span className="text-[10.5px] font-semibold uppercase tracking-[0.3px]">
                       {c.label}
                     </span>
@@ -37,24 +40,14 @@ export function ChannelMix() {
                   </div>
                   <div className="mt-1.5 h-1.5 overflow-hidden rounded bg-[#e3eaf3]">
                     <div
-                      className="h-full rounded"
-                      style={{
-                        width: `${(c.count / max) * 100}%`,
-                        background: color,
-                      }}
+                      className="h-full rounded bg-wm-blue"
+                      style={{ width: `${(c.count / max) * 100}%` }}
                     />
                   </div>
                 </div>
               );
             })}
           </div>
-
-          <p className="mt-4 text-[11.5px] leading-snug text-muted">
-            All of it happens{" "}
-            <span className="font-semibold text-wm-ink">after</span> the lead
-            exists — recovery, document chase, and verification, not top-of-funnel
-            outbound.
-          </p>
         </div>
 
         <div className="hidden w-px bg-line lg:block" />
@@ -62,31 +55,31 @@ export function ChannelMix() {
         {/* What closed the conversions */}
         <div>
           <h2 className="mb-3 text-[12.5px] font-bold uppercase tracking-[0.3px] text-wm-ink">
-            What closed the 95
+            What sealed each conversion
           </h2>
 
           <div className="flex h-3 overflow-hidden rounded-full">
-            {channelMix.closedBy.map((c) => (
+            {channelMix.closedBy.map((c, i) => (
               <div
                 key={c.channel}
                 title={`${c.label} · ${c.pct}%`}
                 style={{
                   width: `${c.pct}%`,
-                  background: channelColor[c.channel],
+                  background: blueScale[i % blueScale.length],
                 }}
               />
             ))}
           </div>
 
           <ul className="mt-3 space-y-1.5">
-            {channelMix.closedBy.map((c) => (
+            {channelMix.closedBy.map((c, i) => (
               <li
                 key={c.channel}
                 className="flex items-center gap-2 text-[11.5px]"
               >
                 <span
                   className="size-2.5 flex-none rounded-[3px]"
-                  style={{ background: channelColor[c.channel] }}
+                  style={{ background: blueScale[i % blueScale.length] }}
                 />
                 <span className="text-ink">{c.label}</span>
                 <span className="ml-auto font-mono font-bold text-muted">

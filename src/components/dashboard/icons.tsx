@@ -61,4 +61,5 @@ export const sourcePill: Record<FieldSource, string> = {
   sms: "bg-violet-bg text-violet",
   email: "bg-green-bg text-green",
   ocr: "bg-[#fcefe0] text-[#c2410c]",
+  platform: "bg-[#e6ebf4] text-wm-ink",
 };

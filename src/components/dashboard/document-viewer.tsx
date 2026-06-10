@@ -112,7 +112,7 @@ export function DocumentViewer({ doc }: { doc: ExtractedDocument }) {
                   {doc.jurisdiction.split("·")[0].trim()}
                 </div>
                 <h4 className="mt-1 font-serif text-[19px] font-bold tracking-tight text-[#1a1a1a]">
-                  Certificate of Formation
+                  {doc.kind}
                 </h4>
                 <div className="mt-0.5 font-mono text-[9px] text-faint">
                   {doc.docId}
@@ -121,13 +121,12 @@ export function DocumentViewer({ doc }: { doc: ExtractedDocument }) {
 
               <div className="space-y-3.5 font-serif text-[12.5px] leading-[2] text-[#2a2a2a]">
                 <p>
-                  The undersigned, for the purpose of forming a limited liability
-                  company under the laws of the State of Oregon, hereby certifies
-                  that the name of the company is <Detected field={name} />.
+                  The undersigned hereby certifies, for the purpose of forming a
+                  corporation under the laws of <Detected field={jurisdiction} />,
+                  that the name of the corporation is <Detected field={name} />.
                 </p>
                 <p>
-                  The entity is organized as a <Detected field={entity} /> in{" "}
-                  <Detected field={jurisdiction} />, with{" "}
+                  The entity is organized as a <Detected field={entity} />, with{" "}
                   <Detected field={agent} /> designated as registered agent.
                 </p>
                 <p>
@@ -139,7 +138,7 @@ export function DocumentViewer({ doc }: { doc: ExtractedDocument }) {
 
               <div className="mt-8 flex items-end justify-between border-t border-dashed border-line pt-4">
                 <div className="font-[cursive] text-[16px] text-[#1a1a1a]">
-                  Dana Reyes
+                  {agent.value}
                 </div>
                 <div className="text-right font-mono text-[8.5px] uppercase tracking-wide text-faint">
                   Authorized signature

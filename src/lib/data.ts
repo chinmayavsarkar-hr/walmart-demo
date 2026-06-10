@@ -13,7 +13,7 @@ export type StageKey =
 
 export type Channel = "voice" | "sms" | "email" | "ocr" | "portal" | "system";
 
-export type FieldSource = "voice" | "sms" | "email" | "ocr";
+export type FieldSource = "voice" | "sms" | "email" | "ocr" | "platform";
 
 export interface Field {
   key: string;
@@ -365,10 +365,10 @@ export const funnelInsights: Record<string, StageInsight> = {
 export const sellers: Seller[] = [
   {
     id: "summit-hearth",
-    company: "Summit Hearth Goods",
-    contact: "Dana Reyes",
-    location: "Portland, OR",
-    initials: "SH",
+    company: "Chicago Guitars Incorporated",
+    contact: "Kabir Walia",
+    location: "Chicago, IL",
+    initials: "CG",
     avatarFrom: "#0071dc",
     avatarTo: "#004f9a",
     stage: "active",
@@ -383,27 +383,31 @@ export const sellers: Seller[] = [
     fields: [
       {
         key: "Legal business name",
-        value: "Summit Hearth Goods LLC",
+        value: "Chicago Guitars Incorporated",
         source: "ocr",
         note: "corrected",
       },
-      { key: "EIN / Tax ID", value: "86-2672049", source: "ocr", mono: true },
-      { key: "Entity type", value: "Single-member LLC", source: "voice" },
+      { key: "EIN / Tax ID", value: "12-3456789", source: "platform", mono: true },
+      { key: "Entity type", value: "C-Corporation", source: "voice" },
       {
         key: "US warehouse + returns",
-        value: "Confirmed — Portland, OR",
+        value: "Confirmed — Chicago, IL",
         source: "voice",
       },
-      { key: "Product GTIN / UPC", value: "GS1 prefix on file", source: "sms" },
+      {
+        key: "Product GTIN / UPC",
+        value: "GS1 prefix on file",
+        source: "platform",
+      },
       {
         key: "Business registration doc",
-        value: "Certificate of Formation",
+        value: "Articles of Incorporation",
         source: "email",
       },
       {
         key: "Payment / payout method",
         value: "Marketplace Wallet linked",
-        source: "voice",
+        source: "platform",
       },
     ],
     timeline: [
@@ -423,7 +427,7 @@ export const sellers: Seller[] = [
         kind: "call",
         title: "Cold-start recovery call",
         time: "Day 3",
-        desc: "Reached Dana on the one number she'd entered. Collected entity type, warehouse, and product details conversationally.",
+        desc: "Reached Kabir on the one number he'd entered. Collected entity type, warehouse, and product details conversationally.",
         quote: {
           text: "Perfect — I'll email you the couple of forms we still need. Just reply with them attached whenever you're ready.",
           agent: true,
@@ -434,53 +438,53 @@ export const sellers: Seller[] = [
         kind: "email",
         title: "Email sent — reply with document",
         time: "Day 4",
-        desc: "Requested the business registration doc + 2 details. Dana replied with her Certificate of Formation attached.",
+        desc: "Requested the business registration doc + 2 details. Kabir replied with the Articles of Incorporation attached.",
       },
       {
         kind: "ocr",
         title: "OCR caught a name discrepancy",
         time: "Day 4",
-        desc: "Read the document and compared it to what Dana provided on the call.",
+        desc: "Read the document and compared it to what Kabir provided on the call.",
         discrepancy: {
           label: "Business name mismatch — form vs. filing",
-          said: "Summit Hearth Co.",
-          filing: "Summit Hearth Goods LLC",
+          said: "Chicago Guitar Co.",
+          filing: "Chicago Guitars Incorporated",
         },
         tag: { text: "Flagged before it could fail verification", tone: "flag" },
         document: {
-          kind: "Certificate of Formation",
-          jurisdiction: "State of Oregon · Secretary of State",
+          kind: "Articles of Incorporation",
+          jurisdiction: "State of Illinois · Secretary of State",
           filedDate: "March 14, 2024",
-          docId: "OR-LLC-2024-0419772",
+          docId: "IL-CORP-2024-0419772",
           fields: [
             {
               label: "Legal business name",
-              value: "Summit Hearth Goods LLC",
+              value: "Chicago Guitars Incorporated",
               confidence: 99.2,
               status: "conflict",
-              conflictWith: "Summit Hearth Co.",
+              conflictWith: "Chicago Guitar Co.",
             },
             {
               label: "Entity type",
-              value: "Limited Liability Company",
+              value: "Corporation",
               confidence: 98.6,
               status: "match",
             },
             {
               label: "Jurisdiction",
-              value: "State of Oregon",
+              value: "State of Illinois",
               confidence: 99.5,
               status: "ok",
             },
             {
               label: "EIN / Tax ID",
-              value: "86-2672049",
+              value: "12-3456789",
               confidence: 97.1,
               status: "match",
             },
             {
               label: "Registered agent",
-              value: "Dana Reyes",
+              value: "Kabir Walia",
               confidence: 96.3,
               status: "match",
             },
@@ -498,16 +502,16 @@ export const sellers: Seller[] = [
         title: "Proactive heads-up sent",
         time: "Day 4",
         quote: {
-          text: "Quick thing, Dana — the name on your filing is 'Summit Hearth Goods LLC,' which is what Walmart needs to match. Call anytime and I'll get it squared away.",
+          text: "Quick thing, Kabir — the name on your filing is 'Chicago Guitars Incorporated,' which is what Walmart needs to match. Call anytime and I'll get it squared away.",
         },
       },
       {
         kind: "call",
         title: "Inbound callback — full context",
         time: "Day 5",
-        desc: "Dana called the number back. Agent already had all 5 prior touchpoints — no re-explaining.",
+        desc: "Kabir called the number back. Agent already had all 5 prior touchpoints — no re-explaining.",
         quote: {
-          text: "Thanks for calling back — I've got your file right here. Let's lock in 'Summit Hearth Goods LLC' and submit you for approval.",
+          text: "Thanks for calling back — I've got your file right here. Let's lock in 'Chicago Guitars Incorporated' and submit you for approval.",
           agent: true,
         },
         tag: { text: "Name corrected · application submitted", tone: "good" },

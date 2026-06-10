@@ -15,7 +15,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Walmart Marketplace · Seller Acquisition",
+  title: "Walmart",
   description:
     "AI seller-acquisition pipeline for Walmart Marketplace, powered by HappyRobot.",
 };
