@@ -1,26 +1,130 @@
 @import "tailwindcss";
 
+/*
+  Walmart Marketplace design tokens.
+  Brand palette mirrors the original POC; exposed to Tailwind via @theme inline
+  so utilities like `bg-wm-blue`, `text-wm-ink`, `border-line` work everywhere.
+*/
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Walmart primary palette */
+  --wm-blue: #0071dc; /* True Blue */
+  --wm-blue-dk: #004f9a; /* darker True Blue, for gradients/hover */
+  --wm-ink: #001e60; /* Bentonville Blue */
+  --spark: #ffc220; /* Spark Yellow */
+
+  /* Walmart secondary blues (hierarchy: Sky → Everyday → True → Bentonville) */
+  --sky-blue: #a9ddf7;
+  --everyday-blue: #4dbdf5;
+  --sky-tint: #eaf4fc; /* lightest sky wash, for selected/hover surfaces */
+
+  --bg: #eaf3fb;
+  --surface: #ffffff;
+  --surface-2: #f7f9fd;
+
+  --line: #e2e8f2;
+  --line-dk: #cbd6e6;
+
+  --text: #15233e;
+  --muted: #64748b;
+  --faint: #94a3b8;
+
+  --green: #15a34a;
+  --green-bg: #e8f6ed;
+  --amber: #e08600;
+  --amber-bg: #fcf1dd;
+  --red: #dc2626;
+  --red-bg: #fbe9e9;
+  --violet: #6b3fd4;
+  --violet-bg: #efeafb;
+
+  --radius: 16px;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-wm-blue: var(--wm-blue);
+  --color-wm-blue-dk: var(--wm-blue-dk);
+  --color-wm-ink: var(--wm-ink);
+  --color-spark: var(--spark);
+
+  --color-sky-blue: var(--sky-blue);
+  --color-everyday-blue: var(--everyday-blue);
+  --color-sky-tint: var(--sky-tint);
+
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+
+  --color-line: var(--line);
+  --color-line-dk: var(--line-dk);
+
+  --color-ink: var(--text);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+
+  --color-green: var(--green);
+  --color-green-bg: var(--green-bg);
+  --color-amber: var(--amber);
+  --color-amber-bg: var(--amber-bg);
+  --color-red: var(--red);
+  --color-red-bg: var(--red-bg);
+  --color-violet: var(--violet);
+  --color-violet-bg: var(--violet-bg);
+
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), monospace;
+
+  --radius-card: var(--radius);
+
+  --shadow-card: 0 1px 2px rgba(16, 42, 82, 0.06), 0 6px 20px rgba(16, 42, 82, 0.05);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  font-synthesis: none;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Smoothly reveal expanded detail rows */
+@keyframes detail-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-detail-in {
+  animation: detail-in 0.22s ease;
+}
+
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+.animate-overlay-in {
+  animation: overlay-in 0.18s ease;
+}
+.animate-dialog-in {
+  animation: dialog-in 0.2s ease;
 }
