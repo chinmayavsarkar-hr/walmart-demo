@@ -4,6 +4,6 @@
  */
 export const DEMO_CREDENTIALS = {
   email: "pilot@walmart.com",
-  password: "marketplace",
+  password: "happyWalmart",
   name: "Pilot Operator",
 };

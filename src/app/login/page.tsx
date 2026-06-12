@@ -113,7 +113,6 @@ export default function LoginPage() {
                 type="password"
                 autoComplete="current-password"
                 required
-                defaultValue={DEMO_CREDENTIALS.password}
                 className="w-full rounded-[10px] border border-line-dk bg-surface px-3.5 py-2.5 text-[14px] text-ink outline-none transition focus:border-wm-blue focus:ring-2 focus:ring-wm-blue/20"
               />
             </div>
