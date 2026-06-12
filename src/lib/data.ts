@@ -36,8 +36,13 @@ export interface ExtractedField {
 export interface ExtractedDocument {
   kind: string;
   jurisdiction: string;
+  /** effective date on the certificate */
   filedDate: string;
+  /** certificate number */
   docId: string;
+  issuanceDate?: string;
+  /** "For Office Use Only" reference number */
+  officeUseId?: string;
   fields: ExtractedField[];
 }
 
@@ -401,7 +406,7 @@ export const sellers: Seller[] = [
       },
       {
         key: "Business registration doc",
-        value: "Articles of Incorporation",
+        value: "Business Registration Certificate",
         source: "email",
       },
       {
@@ -438,7 +443,7 @@ export const sellers: Seller[] = [
         kind: "email",
         title: "Email sent — reply with document",
         time: "Day 4",
-        desc: "Requested the business registration doc + 2 details. Kabir replied with the Articles of Incorporation attached.",
+        desc: "Requested the business registration doc + 2 details. Kabir replied with his NJ Business Registration Certificate attached.",
       },
       {
         kind: "ocr",
@@ -452,46 +457,42 @@ export const sellers: Seller[] = [
         },
         tag: { text: "Flagged before it could fail verification", tone: "flag" },
         document: {
-          kind: "Articles of Incorporation",
-          jurisdiction: "State of Illinois · Secretary of State",
-          filedDate: "March 14, 2024",
-          docId: "IL-CORP-2024-0419772",
+          kind: "Business Registration Certificate",
+          jurisdiction: "State of New Jersey · Business Gateway Services",
+          filedDate: "March 16, 2026",
+          docId: "0708873",
+          issuanceDate: "January 21, 2026",
+          officeUseId: "20080121165754145",
           fields: [
             {
-              label: "Legal business name",
+              label: "Taxpayer name",
               value: "Chicago Guitars Incorporated",
               confidence: 99.2,
               status: "conflict",
               conflictWith: "Chicago Guitar Co.",
             },
             {
-              label: "Entity type",
-              value: "Corporation",
-              confidence: 98.6,
-              status: "match",
-            },
-            {
-              label: "Jurisdiction",
-              value: "State of Illinois",
-              confidence: 99.5,
+              label: "Address",
+              value: "34 Little Brook Road, Springfield, NJ 07081",
+              confidence: 98.4,
               status: "ok",
             },
             {
-              label: "EIN / Tax ID",
-              value: "12-3456789",
-              confidence: 97.1,
+              label: "Certificate number",
+              value: "0708873",
+              confidence: 99.1,
               status: "match",
             },
             {
-              label: "Registered agent",
-              value: "Kabir Walia",
-              confidence: 96.3,
-              status: "match",
+              label: "Effective date",
+              value: "March 16, 2026",
+              confidence: 97.8,
+              status: "ok",
             },
             {
-              label: "Date filed",
-              value: "March 14, 2024",
-              confidence: 95.8,
+              label: "Date of issuance",
+              value: "January 21, 2026",
+              confidence: 96.5,
               status: "ok",
             },
           ],

@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { ScanLine, FileText, TriangleAlert, Check } from "lucide-react";
 import {
   Dialog,
@@ -55,6 +56,22 @@ function Detected({ field }: { field: ExtractedField }) {
   );
 }
 
+/** A labeled row on the certificate — bold green label, value to the right. */
+function Row({
+  label,
+  children,
+}: {
+  label: string;
+  children?: ReactNode;
+}) {
+  return (
+    <div className="flex items-baseline gap-3">
+      <dt className="w-[140px] flex-none font-bold">{label}</dt>
+      <dd className="min-w-0">{children}</dd>
+    </div>
+  );
+}
+
 export function DocumentViewer({ doc }: { doc: ExtractedDocument }) {
   const byLabel = (label: string) =>
     doc.fields.find((f) => f.label === label)!;
@@ -62,12 +79,11 @@ export function DocumentViewer({ doc }: { doc: ExtractedDocument }) {
     doc.fields.reduce((a, f) => a + f.confidence, 0) / doc.fields.length;
   const conflict = doc.fields.find((f) => f.status === "conflict");
 
-  const name = byLabel("Legal business name");
-  const entity = byLabel("Entity type");
-  const jurisdiction = byLabel("Jurisdiction");
-  const agent = byLabel("Registered agent");
-  const ein = byLabel("EIN / Tax ID");
-  const filed = byLabel("Date filed");
+  const taxpayer = byLabel("Taxpayer name");
+  const address = byLabel("Address");
+  const certNo = byLabel("Certificate number");
+  const effective = byLabel("Effective date");
+  const issuance = byLabel("Date of issuance");
 
   return (
     <Dialog>
@@ -100,49 +116,51 @@ export function DocumentViewer({ doc }: { doc: ExtractedDocument }) {
         <div className="grid max-h-[calc(92dvh-58px)] grid-cols-1 overflow-auto lg:grid-cols-[1.25fr_1fr]">
           {/* LEFT — the "scanned" document with detected boxes */}
           <div className="border-b border-line bg-[#f1f4f9] p-6 lg:border-b-0 lg:border-r">
-            <div className="mx-auto max-w-md rounded-[6px] border border-line-dk bg-white px-9 py-10 shadow-[0_8px_30px_rgba(16,42,82,0.12)]">
-              {/* seal */}
-              <div className="mb-6 flex flex-col items-center text-center">
-                <span className="mb-3 flex size-12 items-center justify-center rounded-full border-[3px] border-[#0e6b30] text-[#0e6b30]">
-                  <svg viewBox="0 0 24 24" className="size-6" fill="currentColor">
-                    <path d="M12 2l2.4 4.8 5.3.8-3.8 3.7.9 5.3L12 14.9 7.2 16.4l.9-5.3L4.3 7.6l5.3-.8z" />
-                  </svg>
-                </span>
-                <div className="font-mono text-[9px] uppercase tracking-[0.35em] text-muted">
-                  {doc.jurisdiction.split("·")[0].trim()}
+            <div className="mx-auto max-w-md border-[3px] border-[#1a6b3a] bg-white p-1.5 shadow-[0_8px_30px_rgba(16,42,82,0.12)]">
+              <div className="border border-[#1a6b3a] px-6 py-5">
+                {/* header — seal + title */}
+                <div className="flex items-center gap-4 border-b-2 border-[#1a6b3a] pb-4">
+                  <span className="flex size-14 flex-none items-center justify-center rounded-full border-[3px] border-[#1a6b3a] bg-[#eaf3ec] text-[#1a6b3a]">
+                    <span className="font-serif text-[18px] font-extrabold leading-none">
+                      NJ
+                    </span>
+                  </span>
+                  <h4 className="font-serif text-[16px] font-extrabold uppercase leading-[1.15] tracking-tight text-[#1a6b3a]">
+                    State of New Jersey
+                    <br />
+                    Business Registration Certificate
+                  </h4>
                 </div>
-                <h4 className="mt-1 font-serif text-[19px] font-bold tracking-tight text-[#1a1a1a]">
-                  {doc.kind}
-                </h4>
-                <div className="mt-0.5 font-mono text-[9px] text-faint">
-                  {doc.docId}
-                </div>
-              </div>
 
-              <div className="space-y-3.5 font-serif text-[12.5px] leading-[2] text-[#2a2a2a]">
-                <p>
-                  The undersigned hereby certifies, for the purpose of forming a
-                  corporation under the laws of <Detected field={jurisdiction} />,
-                  that the name of the corporation is <Detected field={name} />.
-                </p>
-                <p>
-                  The entity is organized as a <Detected field={entity} />, with{" "}
-                  <Detected field={agent} /> designated as registered agent.
-                </p>
-                <p>
-                  Federal Employer Identification Number{" "}
-                  <Detected field={ein} />, filed and effective as of{" "}
-                  <Detected field={filed} />.
-                </p>
-              </div>
+                {/* body — labeled rows */}
+                <dl className="mt-5 space-y-3 font-serif text-[12.5px] text-[#1a6b3a]">
+                  <Row label="Taxpayer Name:">
+                    <Detected field={taxpayer} />
+                  </Row>
+                  <Row label="Trade Name:" />
+                  <Row label="Address:">
+                    <Detected field={address} />
+                  </Row>
+                  <Row label="Certificate Number:">
+                    <Detected field={certNo} />
+                  </Row>
+                  <Row label="Effective Date:">
+                    <Detected field={effective} />
+                  </Row>
+                  <Row label="Date of Issuance:">
+                    <Detected field={issuance} />
+                  </Row>
+                </dl>
 
-              <div className="mt-8 flex items-end justify-between border-t border-dashed border-line pt-4">
-                <div className="font-[cursive] text-[16px] text-[#1a1a1a]">
-                  {agent.value}
-                </div>
-                <div className="text-right font-mono text-[8.5px] uppercase tracking-wide text-faint">
-                  Authorized signature
-                </div>
+                {/* footer — office use only */}
+                {doc.officeUseId ? (
+                  <div className="mt-6 border-t-2 border-[#1a6b3a] pt-4 font-serif text-[12.5px] text-[#1a6b3a]">
+                    <div className="font-bold">For Office Use Only:</div>
+                    <div className="mt-1.5 font-mono text-[13px]">
+                      {doc.officeUseId}
+                    </div>
+                  </div>
+                ) : null}
               </div>
             </div>
           </div>
